@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button login = findViewById(R.id.login);
-        Button new_user = findViewById(R.id.new_user);
+        Button newUser = findViewById(R.id.new_user);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new_user.setOnClickListener(new View.OnClickListener() {
+        newUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NewUserActivity.class));
