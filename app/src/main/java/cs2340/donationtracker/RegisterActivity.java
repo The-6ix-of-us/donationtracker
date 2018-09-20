@@ -6,21 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
 
-        Button cancelSignIn = findViewById(R.id.cancel);
+        Button cancelSignIn = findViewById(R.id.cancel_button);
         cancelSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
             }
         });
     }
-
-
 }
