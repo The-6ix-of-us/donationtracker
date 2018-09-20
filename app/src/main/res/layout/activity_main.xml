@@ -21,7 +21,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="338dp"
             android:layout_height="61dp"
-            android:text="@android:string/cancel"
+            android:text="@string/action_logout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

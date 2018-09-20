@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 3;
     }
 
     /**
@@ -202,6 +202,8 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            boolean loginAttempt = false;
+
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -213,12 +215,11 @@ public class LoginActivity extends AppCompatActivity {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mUsername)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    loginAttempt = pieces[1].equals(mPassword);
                 }
             }
 
-            // TODO: register the new account here.
-            return true;
+            return loginAttempt;
         }
 
         @Override
