@@ -12,6 +12,7 @@
     tools:context=".controllers.LoginActivity">
 
     <!-- Login progress -->
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -22,8 +23,8 @@
 
     <ScrollView
         android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="349dp"
+        android:layout_height="230dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -68,20 +69,21 @@
                 android:id="@+id/username_sign_in_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="69dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/colorPrimary"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/cancel_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:text="Cancel" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/cancel_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="349dp"
+        android:layout_height="69dp"
+        android:background="@color/colorAccent"
+        android:text="Cancel"
+        android:textStyle="bold" />
 </LinearLayout>
