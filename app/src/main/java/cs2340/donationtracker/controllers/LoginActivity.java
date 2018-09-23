@@ -1,4 +1,4 @@
-package cs2340.donationtracker;
+package cs2340.donationtracker.controllers;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,18 +19,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import cs2340.donationtracker.R;
+import cs2340.donationtracker.model.Credentials;
+import cs2340.donationtracker.model.User;
+
 /**
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "username:password"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -41,15 +40,21 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private User sample = new User("user", "pass");
+    private static ArrayList<User> users = new ArrayList<>();
+    protected static Credentials credentials = new Credentials(users);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (EditText) findViewById(R.id.username);
+        mUsernameView = findViewById(R.id.username);
+        mPasswordView = findViewById(R.id.password);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        credentials.addUser(sample);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -134,15 +139,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /*private boolean isUsernameValid(String username) {
-        boolean
-        if (!username.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
-
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 3;
@@ -203,6 +199,7 @@ public class LoginActivity extends AppCompatActivity {
             // TODO: attempt authentication against a network service.
 
             boolean loginAttempt = false;
+            User user = new User(mUsername, mPassword);
 
             try {
                 // Simulate network access.
@@ -211,12 +208,8 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUsername)) {
-                    // Account exists, return true if the password matches.
-                    loginAttempt = pieces[1].equals(mPassword);
-                }
+            for (User u : credentials.getUsers()) {
+                loginAttempt = u.equals(user);
             }
 
             return loginAttempt;

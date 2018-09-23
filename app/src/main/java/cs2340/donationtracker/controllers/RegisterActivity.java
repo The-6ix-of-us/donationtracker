@@ -1,4 +1,4 @@
-package cs2340.donationtracker;
+package cs2340.donationtracker.controllers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import cs2340.donationtracker.model.User;
+import cs2340.donationtracker.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,6 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
+            User user = new User(username, password);
+            LoginActivity.credentials.addUser(user);
             Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
             startActivity(intent);
         }
