@@ -1,6 +1,7 @@
 package cs2340.donationtracker.controllers;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import cs2340.donationtracker.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private UserRegistrationTask mAuthTask = null;
     private EditText mUsernameView;
     private EditText mPasswordView;
 
@@ -77,10 +79,62 @@ public class RegisterActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            User user = new User(username, password);
-            LoginActivity.credentials.addUser(user);
-            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-            startActivity(intent);
+            mAuthTask = new UserRegistrationTask(username, password);
+            mAuthTask.execute((Void) null);
+        }
+    }
+
+    /**
+     * Represents a registration task used to authenticate
+     * the user.
+     */
+    public class UserRegistrationTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mUsername;
+        private final String mPassword;
+
+        UserRegistrationTask(String username, String password) {
+            mUsername = username;
+            mPassword = password;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            boolean registerAttempt = true;
+            User user = new User(mUsername, mPassword);
+
+            for (User u : LoginActivity.credentials.getUsers()) {
+                if (u.getUsername().equals(user.getUsername())){
+                    System.out.print(u);
+                }
+                registerAttempt = !u.getUsername().equals(user.getUsername());
+            }
+
+            if (registerAttempt) {
+                LoginActivity.credentials.addUser(user);
+            }
+
+            return registerAttempt;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+
+            if (success) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                mUsernameView.setError(getString(R.string.error_username_in_use));
+                mUsernameView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
         }
     }
 }
