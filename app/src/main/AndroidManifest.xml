@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".controllers.HomeActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,8 +27,10 @@
             android:label="@string/title_activity_login"
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".controllers.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".controllers.RegisterActivity" />
+        <activity android:name=".controllers.MainActivity"></activity>
     </application>
 
 </manifest>
