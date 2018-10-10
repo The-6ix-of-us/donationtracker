@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 import {
   StyleSheet,
   View,
@@ -18,13 +19,29 @@ class Login extends Component {
       username: "",
       password: ""
     }
+    this.onPressRegister = this.onPressRegister.bind(this);
     this.onPressLogin = this.onPressLogin.bind(this);
   }
 
   onPressLogin() {
-    if (this.state.username === "User" && this.state.password === "pass") {
+    console.log('login pressed');
+    // TODO: implement signInRequest, signInSuccess, signInFailure
+    // this.props.signInRequest();
+    firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+    .then((userCredential) => {
+      console.log('successful login')
+      // this.props.signInSuccess(userCredential.user);
       this.props.navigation.navigate('Main');
-    }
+    })
+    .catch((error) => {
+      // TODO: add a cool alert thing here
+      console.log(error);
+      // this.props.signInFailure(error);
+    });
+  }
+
+  onPressRegister() {
+    this.props.navigation.navigate('Register');
   }
 
   render() {
@@ -38,7 +55,7 @@ class Login extends Component {
         <FormLabel>Password</FormLabel>
         <FormInput secureTextEntry={true} onChangeText={(e) => this.setState({password: e})} />
         <Button raised title="Login" onPress={this.onPressLogin}/>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
+        <TouchableOpacity onPress={this.onPressRegister}>
           <FormLabel>Register here</FormLabel>
         </TouchableOpacity>
       </View>
