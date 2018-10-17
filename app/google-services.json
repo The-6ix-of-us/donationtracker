@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "662111099293",
+    "firebase_url": "https://the-6ix-of-us.firebaseio.com",
+    "project_id": "the-6ix-of-us",
+    "storage_bucket": "the-6ix-of-us.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662111099293:android:ff2b70dd4217af16",
+        "android_client_info": {
+          "package_name": "cs2340.donationtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662111099293-0e6ia2gd59rk2ibugejcutfkeqk2cvgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmtKd-s6E5MYaOfID_DE7efZ1P11dCCjQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
