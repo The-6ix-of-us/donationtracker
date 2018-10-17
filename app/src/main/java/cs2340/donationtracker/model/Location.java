@@ -56,7 +56,7 @@ public class Location implements Parcelable {
     }
 
 
-    private int getKey() {
+    protected int getKey() {
         return key;
     }
 
