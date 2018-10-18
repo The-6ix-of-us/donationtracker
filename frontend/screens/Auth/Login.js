@@ -9,35 +9,36 @@ import {
 import {
   Button,
   FormLabel,
-  FormInput
+  FormInput,
+  FormValidationMessage,
 } from 'react-native-elements';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: ""
-    }
+      username: '',
+      password: '',
+      error: false,
+    };
     this.onPressRegister = this.onPressRegister.bind(this);
     this.onPressLogin = this.onPressLogin.bind(this);
   }
 
   onPressLogin() {
-    console.log('login pressed');
     // TODO: implement signInRequest, signInSuccess, signInFailure
     // this.props.signInRequest();
     firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-    .then((userCredential) => {
-      console.log('successful login')
-      // this.props.signInSuccess(userCredential.user);
-      this.props.navigation.navigate('Main');
-    })
-    .catch((error) => {
-      // TODO: add a cool alert thing here
-      console.log(error);
-      // this.props.signInFailure(error);
-    });
+      .then((userCredential) => {
+        // this.props.signInSuccess(userCredential.user);
+        this.props.navigation.navigate('Main');
+      })
+      .catch((error) => {
+        // TODO: add a cool alert thing here
+        this.setState({ error: true })
+        this.passwordInput.shake();
+        // this.props.signInFailure(error);
+      });
   }
 
   onPressRegister() {
@@ -47,19 +48,22 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <View style={styles.content}>
-        <FormLabel>Username</FormLabel>
-        <FormInput onChangeText={(e) => {
-          this.setState({username: e})
-        }}/>
-        <FormLabel>Password</FormLabel>
-        <FormInput secureTextEntry={true} onChangeText={(e) => this.setState({password: e})} />
-        <Button raised title="Login" onPress={this.onPressLogin}/>
-        <TouchableOpacity onPress={this.onPressRegister}>
-          <FormLabel>Register here</FormLabel>
-        </TouchableOpacity>
+        <View style={styles.content}>
+          <FormLabel>Username</FormLabel>
+          <FormInput onChangeText={(e) => {
+            this.setState({ username: e });
+          }}/>
+          <FormLabel>Password</FormLabel>
+          <FormInput secureTextEntry={true} onChangeText={
+            (e) => this.setState({ password: e })
+          } ref={ref => this.passwordInput = ref} />
+          {this.state.error && <FormValidationMessage>Incorrect email or password</FormValidationMessage>}
+          <Button raised title="Login" onPress={this.onPressLogin}/>
+          <TouchableOpacity onPress={this.onPressRegister}>
+            <FormLabel>Register here</FormLabel>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     );
   }
 }

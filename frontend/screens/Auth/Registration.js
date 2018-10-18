@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Picker,
   View,
   Text,
   TextInput,
@@ -20,10 +21,17 @@ class Registration extends Component {
   render() {
     return (
       <View className="container">
+        {/* <FormLabel>Display Name</FormLabel>
+        <FormInput /> */}
         <FormLabel>Username</FormLabel>
         <FormInput />
         <FormLabel>Password></FormLabel>
         <FormInput secureTextEntry={true} />
+        {/* <Picker>
+          <Picker.Item label="Admin" />
+          <Picker.Item label="Location Employee" />
+          <Picker.Item label="User" />
+        </Picker> */}
         <Button raised title="Register" />
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
           <FormLabel>Login here</FormLabel>

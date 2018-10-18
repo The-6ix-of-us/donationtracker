@@ -1,25 +1,17 @@
 import React from 'react';
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import { StyleSheet, Text, View } from 'react-native';
-import firebase from 'firebase';
 import Icon from 'react-native-vector-icons';
 
+import firebase from './firebaseConfig';
+
 import Home from './frontend/screens/App/Home';
+import AddLocation from './frontend/screens/App/AddLocation';
+
+import AppHeader from './frontend/components/AppHeader';
 
 import Login from './frontend/screens/Auth/Login';
 import Registration from './frontend/screens/Auth/Registration';
-
-// Setup firebase
-var config = {
-  apiKey: "AIzaSyC7qDP0nGFZaA-rnvRT_hLdz4MgZGaILVE",
-  authDomain: "the-6ix-of-us.firebaseapp.com",
-  databaseURL: "https://the-6ix-of-us.firebaseio.com",
-  projectId: "the-6ix-of-us",
-  storageBucket: "the-6ix-of-us.appspot.com",
-  messagingSenderId: "662111099293"
-};
-
-firebase.initializeApp(config);
 
 const Auth = createStackNavigator({
   Login: {
@@ -50,14 +42,21 @@ const Main = createDrawerNavigator({
     navigationOptions: {
       drawerLabel: 'Log Out'
     }
+  },
+  AddLocation: {
+    screen: AddLocation,
+    navigationOptions: {
+      drawerLabel: null,
+    }
   }
-})
+});
 
 const App = createStackNavigator({
   Auth: { screen: Auth },
   Main: { screen: Main }
 }, {
-  headerMode: 'none'
+  headerMode: 'none',
+  initialRoute: 'Main',
 });
 
 const styles = StyleSheet.create({
