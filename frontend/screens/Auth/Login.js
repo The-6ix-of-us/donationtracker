@@ -35,14 +35,14 @@ class Login extends Component {
       })
       .catch((error) => {
         // TODO: add a cool alert thing here
-        this.setState({ error: true })
+        this.setState({ error: true });
         this.passwordInput.shake();
         // this.props.signInFailure(error);
       });
   }
 
   onPressRegister() {
-    this.props.navigation.navigate('Register');
+    this.props.navigation.navigate('Registration');
   }
 
   render() {
