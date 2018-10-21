@@ -7,6 +7,7 @@ import firebase from './firebaseConfig';
 
 import Home from './frontend/screens/App/Home';
 import AddLocation from './frontend/screens/App/AddLocation';
+import ViewLocation from './frontend/screens/App/ViewLocation';
 
 import AppHeader from './frontend/components/AppHeader';
 
@@ -48,11 +49,17 @@ const Main = createDrawerNavigator({
     navigationOptions: {
       drawerLabel: null,
     }
+  },
+  ViewLocation: {
+    screen: ViewLocation,
+    navigationOptions: {
+      drawerLabel: null
+    },
   }
 });
 
 const App = createStackNavigator({
-  Auth: { screen: Auth },
+  // Auth: { screen: Auth },
   Main: { screen: Main }
 }, {
   headerMode: 'none',

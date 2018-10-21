@@ -10,7 +10,9 @@ class LocationsList extends Component {
 
   renderListItem(item) {
     return (
-      <ListItem key={item.key} title={item['Name']} />
+      <ListItem key={item.key} title={item['Name']} onPress={() => this.props.navigation.navigate('ViewLocation', {
+        location: item
+      })} />
     );
   }
   render() {
