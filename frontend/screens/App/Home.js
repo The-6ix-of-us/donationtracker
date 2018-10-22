@@ -27,7 +27,10 @@ class Home extends Component {
 
   /* TODO: put this somewhere else */
   getLocations() {
-    this.setState({ locations: api.get('/fetch_locations') });
+    fetch('http://127.0.0.1:3000/locations/').then(response => {
+      console.log(response.json() + " ");
+      this.setState({ locations: response });
+    });
   }
 
   render() {

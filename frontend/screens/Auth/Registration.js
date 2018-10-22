@@ -32,7 +32,7 @@ class Registration extends Component {
   }
 
   onPressRegister() {
-    api.post('/register', {
+    api.post('/users/register', {
       email: this.state.email,
       password: this.state.password,
       userType: this.state.userType,

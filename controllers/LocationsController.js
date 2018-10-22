@@ -17,11 +17,10 @@ const addLocation = (location) => {
 
 const fetchLocations = () => {
   let list = [];
-  firebase.db.collection('location-data').get().then((snapshot) => {
+  return firebase.db.collection('location-data').get().then((snapshot) => {
     snapshot.forEach((doc, i) => {
       list.push(doc.data());
     });
-  }).then(() => {
     return list;
   });
 };

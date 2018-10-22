@@ -17,7 +17,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
       error: false,
     };
@@ -26,11 +26,12 @@ class Login extends Component {
   }
 
   onPressLogin() {
-    api.post('/login', {
+    api.post('/users/login', {
       email: this.state.email,
       password: this.state.password,
     }).then((response) => {
-      if (response.userCredential) {
+      console.log("response: ", response);
+      if (response.json().userCredential) {
         this.props.navigation.navigate('Main');
       } else {
         this.passwordInput.shake();
@@ -50,7 +51,7 @@ class Login extends Component {
         <View style={styles.content}>
           <FormLabel>Username</FormLabel>
           <FormInput onChangeText={(e) => {
-            this.setState({ username: e });
+            this.setState({ email: e });
           }}/>
           <FormLabel>Password</FormLabel>
           <FormInput secureTextEntry={true} onChangeText={

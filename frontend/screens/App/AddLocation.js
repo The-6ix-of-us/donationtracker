@@ -40,7 +40,7 @@ class AddLocation extends Component {
       'Type': this.state.type,
       'Phone': this.state.phone,
     };
-    api.post('/add_location', {
+    api.post('/locations/', {
       location,
     });
     this.props.navigation.navigate('Home');
