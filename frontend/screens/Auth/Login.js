@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import {
   StyleSheet,
   View,
   TouchableOpacity
 } from 'react-native';
-
 import {
   Button,
   FormLabel,
   FormInput,
   FormValidationMessage,
 } from 'react-native-elements';
+
+import api from '../../api';
 
 class Login extends Component {
   constructor(props) {
@@ -26,19 +26,18 @@ class Login extends Component {
   }
 
   onPressLogin() {
-    // TODO: implement signInRequest, signInSuccess, signInFailure
-    // this.props.signInRequest();
-    firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-      .then((userCredential) => {
-        // this.props.signInSuccess(userCredential.user);
+    api.post('/login', {
+      email: this.state.email,
+      password: this.state.password,
+    }).then((response) => {
+      if (response.userCredential) {
         this.props.navigation.navigate('Main');
-      })
-      .catch((error) => {
-        // TODO: add a cool alert thing here
-        this.setState({ error: true });
+      } else {
         this.passwordInput.shake();
-        // this.props.signInFailure(error);
-      });
+        this.setState({ error: true });
+        console.log(response);
+      }
+    });
   }
 
   onPressRegister() {

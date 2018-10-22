@@ -1,9 +1,9 @@
-import firebase, { db } from '../firebaseConfig';
+const firebase = require('../firebaseConfig');
 
-export const addLocation = (location) => {
+const addLocation = (location) => {
   const coordinates = new firebase.firestore.GeoPoint(parseFloat(location['Latitude']), parseFloat(location['Longitude']));
 
-  db.collection('location-data').add({
+  firebase.db.collection('location-data').add({
     'Name': location['Name'],
     'Coordinates': coordinates,
     'Phone': location['Phone'],
@@ -15,10 +15,26 @@ export const addLocation = (location) => {
   });
 };
 
-export const editLocation = (location) => {
+const fetchLocations = () => {
+  let list = [];
+  firebase.db.collection('location-data').get().then((snapshot) => {
+    snapshot.forEach((doc, i) => {
+      list.push(doc.data());
+    });
+  }).then(() => {
+    return list;
+  });
+};
+
+const editLocation = (location) => {
 
 };
 
-export const removeLocation = (location) => {
+const removeLocation = (location) => {
 
+};
+
+module.exports = {
+  addLocation,
+  fetchLocations,
 };

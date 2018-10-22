@@ -14,8 +14,6 @@ import {
   FormInput
 } from 'react-native-elements';
 
-import firebase, { db } from '../../../firebaseConfig';
-
 class Registration extends Component {
   static navigationOptions = {
     title: 'Register',
@@ -34,20 +32,17 @@ class Registration extends Component {
   }
 
   onPressRegister() {
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then((userCredential) => {
-      db.collection('users').doc(userCredential.user.uid).set({
-        email: userCredential.user.email,
-        'user-type': this.state.userType,
-      });
-      this.props.navigation.navigate('Main');
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      this.email_input.shake();
-      console.log(error);
-      var errorCode = error.code;
-      var errorMessage = error.message;
+    api.post('/register', {
+      email: this.state.email,
+      password: this.state.password,
+      userType: this.state.userType,
+    }).then(response => {
+      if (response.userCredential) {
+        this.props.navigation.navigate('Main');
+      } else {
+        this.email_input.shake();
+        console.log(response);
+      }
     });
   }
 

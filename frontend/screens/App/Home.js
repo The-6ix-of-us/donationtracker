@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import 'firebase/firestore';
 
-import firebase, { db } from '../../../firebaseConfig';
+import api from '../../api';
+
 import AppHeader from '../../components/AppHeader';
 
 import LocationsList from './LocationsList';
@@ -27,14 +27,7 @@ class Home extends Component {
 
   /* TODO: put this somewhere else */
   getLocations() {
-    let list = [];
-    db.collection('location-data').get().then((snapshot) => {
-      snapshot.forEach((doc, i) => {
-        list.push(doc.data());
-      });
-    }).then(() => {
-      this.setState({ locations: list });
-    });
+    this.setState({ locations: api.get('/fetch_locations') });
   }
 
   render() {

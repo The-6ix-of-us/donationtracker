@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Button, FormInput, FormLabel } from 'react-native-elements';
 
-import AppHeader from '../../components/AppHeader';
+import api from '../../api';
 
-import { addLocation } from '../../../controllers/LocationsController';
+import AppHeader from '../../components/AppHeader';
 
 class AddLocation extends Component {
   constructor(props) {
@@ -40,7 +40,9 @@ class AddLocation extends Component {
       'Type': this.state.type,
       'Phone': this.state.phone,
     };
-    addLocation(location);
+    api.post('/add_location', {
+      location,
+    });
     this.props.navigation.navigate('Home');
   }
 
