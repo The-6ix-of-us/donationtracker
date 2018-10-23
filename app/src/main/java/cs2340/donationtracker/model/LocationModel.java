@@ -42,4 +42,12 @@ public class LocationModel {
         return null;
     }
 
+    public Location findItemByName(String name) {
+        for (Location d : items) {
+            if (d.getName().equals(name)) return d;
+        }
+        Log.d("MYAPP", "Warning - Failed to find name: " + name);
+        return null;
+    }
+
 }

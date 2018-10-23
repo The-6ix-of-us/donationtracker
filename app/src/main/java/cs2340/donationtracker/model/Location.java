@@ -3,6 +3,9 @@ package cs2340.donationtracker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
@@ -19,6 +22,8 @@ public class Location implements Parcelable {
     private String type;
     private String phone;
     private String website;
+
+    private List<DonationItem> items;
 
     @Override
     public String toString() {
@@ -52,6 +57,8 @@ public class Location implements Parcelable {
         type = details[8];
         phone = details[9];
         website = details[10];
+
+        items = new ArrayList<>();
 
     }
 
@@ -97,6 +104,12 @@ public class Location implements Parcelable {
     }
 
     public String getAddress() { return address; }
+
+    public List<DonationItem> getItems() { return items; }
+
+    public void addItem(DonationItem item) {
+        items.add(item);
+    }
 
     private Location(Parcel in) {
         key = in.readInt();
