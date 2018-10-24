@@ -9,6 +9,7 @@ import java.util.List;
 public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
+
     private int key;
     private String name;
     private double latitude;
@@ -41,6 +42,7 @@ public class Location implements Parcelable {
                 ", website='" + website + '\'' +
                 '}';
     }
+
     public Location (String [] details) {
 
         key = Integer.parseInt(details[0]);
@@ -61,7 +63,6 @@ public class Location implements Parcelable {
         items = new ArrayList<>();
 
     }
-
 
     protected int getKey() {
         return key;

@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.DonationItem;
