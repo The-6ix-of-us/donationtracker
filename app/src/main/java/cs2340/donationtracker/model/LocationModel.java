@@ -13,36 +13,36 @@ public class LocationModel {
     private static final LocationModel _instance = new LocationModel();
     public static LocationModel getInstance() { return _instance; }
 
-    private List<Location> items;
+    private List<Location> locations;
 
     private Location _currentLocation;
 
     private LocationModel() {
-        items = new ArrayList<>();
+        locations = new ArrayList<>();
     }
 
-    public void add(Location item) {
-        items.add(item);
+    public void add(Location location) {
+        locations.add(location);
     }
 
-    public List<Location> getItems() {
-        return items;
+    public List<Location> getLocations() {
+        return locations;
     }
 
     public Location getCurrentLocation() { return _currentLocation;}
 
     public void setCurrentLocation(Location location) { _currentLocation = location; }
 
-    public Location findItemById(int id) {
-        for (Location d : items) {
+    public Location findLocationById(int id) {
+        for (Location d : locations) {
             if (d.getKey() == id) return d;
         }
         Log.d("MYAPP", "Warning - Failed to find id: " + id);
         return null;
     }
 
-    public Location findItemByName(String name) {
-        for (Location d : items) {
+    public Location findLocationByName(String name) {
+        for (Location d : locations) {
             if (d.getName().equals(name)) return d;
         }
         Log.d("MYAPP", "Warning - Failed to find name: " + name);
