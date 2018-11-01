@@ -58,7 +58,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         for (Location loc : locations) {
             LatLng coordinates = new LatLng(loc.getLatitude(), loc.getLongitude());
-            MarkerOptions options = new MarkerOptions().position(coordinates).title(loc.getName());
+            MarkerOptions options = new MarkerOptions().position(coordinates).title(loc.getName()).snippet(loc.getPhone());
             mMap.addMarker(options);
             builder.include(coordinates);
         }
