@@ -30,6 +30,7 @@ public class LocationListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private LocationAdapter adapter;
+    private Button viewMap;
     public ArrayList<Location> locations;
 
     private LocationModel locationModel = LocationModel.getInstance();
@@ -41,6 +42,8 @@ public class LocationListActivity extends AppCompatActivity {
 
         Button signOut = findViewById(R.id.sign_out);
         signOut.setOnClickListener(v -> startActivity(new Intent(LocationListActivity.this, HomeActivity.class)));
+
+        viewMap = findViewById(R.id.view_map);
 
         locations = loadLocationData();
 
@@ -56,6 +59,7 @@ public class LocationListActivity extends AppCompatActivity {
     private ArrayList<Location> loadLocationData() {
         ArrayList<Location> locations = new ArrayList<>();
         InputStream input = getResources().openRawResource(R.raw.location_data);
+        Intent mapIntent = new Intent(LocationListActivity.this, MapActivity.class);
 
         BufferedReader reader =
                 new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8"))
@@ -73,6 +77,7 @@ public class LocationListActivity extends AppCompatActivity {
                 Location location = new Location(tokens);
 
                 locationModel.add(location);
+                
                 locations.add(location);
 
                 Log.d("MyActivity", "Just created;" + location);

@@ -7,23 +7,57 @@
     android:fitsSystemWindows="true"
     tools:context="cs2340.donationtracker.controllers.LocationListActivity">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/location_list" />
+        <include
+            android:id="@+id/location_list"
+            layout="@layout/location_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/button_constraint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/sign_out"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|center_vertical|center"
-            android:text="SIGN OUT"
-            android:background="@color/colorAccent"
-            android:textStyle="bold"/>
-    </FrameLayout>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/button_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/location_list"
+            app:layout_constraintVertical_bias="1.0">
+
+            <Button
+                android:id="@+id/sign_out"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center_vertical|center"
+                android:background="@color/colorAccent"
+                android:text="SIGN OUT"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/view_map"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@color/browser_actions_title_color"
+                android:text="View on Map"
+                android:textColor="@color/cardview_light_background"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.design.widget.CoordinatorLayout>
