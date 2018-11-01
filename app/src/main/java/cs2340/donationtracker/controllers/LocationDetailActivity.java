@@ -40,7 +40,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         String locationName = getIntent().getStringExtra("location_name");
         TextView name = findViewById(R.id.location_detail_name);
         name.setText("Name: " + locationName);
-        location = LocationModel.getInstance().findItemByName(locationName);
+        location = LocationModel.getInstance().findLocationByName(locationName);
         items = new ArrayList<>();
         items.addAll(location.getItems());
 

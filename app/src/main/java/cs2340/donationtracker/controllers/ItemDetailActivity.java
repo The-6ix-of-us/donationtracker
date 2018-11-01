@@ -26,7 +26,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         String itemLocation = getIntent().getStringExtra("item_location");
         TextView type = findViewById(R.id.item_detail_location);
         type.setText("Location: " + itemLocation);
-        location = LocationModel.getInstance().findItemByName(itemLocation);
+        location = LocationModel.getInstance().findLocationByName(itemLocation);
 
         String itemValue = getIntent().getStringExtra("item_value");
         TextView phone = findViewById(R.id.item_detail_value);
