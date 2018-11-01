@@ -3,14 +3,24 @@ package cs2340.donationtracker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
 
-    private int key;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final DonationItemModel itemModel = DonationItemModel.getInstance();
+
+    private String key;
     private String name;
     private double latitude;
     private double longitude;
@@ -25,6 +35,7 @@ public class Location implements Parcelable {
     private String website;
 
     private List<DonationItem> items;
+    private List<String> itemIDs;
 
     @Override
     public String toString() {
@@ -45,7 +56,8 @@ public class Location implements Parcelable {
 
     public Location (String [] details) {
 
-        key = Integer.parseInt(details[0]);
+        /* Key is the auto-generated document ID from firebase */
+        key = details[0];
         name = details[1];
 
         latitude = Double.parseDouble(details[2]);
@@ -61,10 +73,11 @@ public class Location implements Parcelable {
         website = details[10];
 
         items = new ArrayList<>();
+        itemIDs = new ArrayList<>();
 
     }
 
-    protected int getKey() {
+    protected String getKey() {
         return key;
     }
 
@@ -108,12 +121,35 @@ public class Location implements Parcelable {
 
     public List<DonationItem> getItems() { return items; }
 
+    public List<String> getItemIDs() { return itemIDs; }
+
+    public void setItems(List<String> ids) {
+        items = new ArrayList<>();
+        if (ids != null && ids.size() != 0) {
+            for (String id : ids) {
+                db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DonationItem item = new DonationItem(task.getResult());
+                        itemModel.addItem(item);
+                        items.add(item);
+                    }
+                });
+            }
+        }
+    }
+
     public void addItem(DonationItem item) {
+        itemModel.addItem(item);
         items.add(item);
+        DocumentReference docRef = db.collection("donation-item").document();
+        item.setKey(docRef.getId());
+        itemIDs.add(docRef.getId());
+        docRef.set(item.toMap());
+        db.collection("location-data").document(key).set(toMap());
     }
 
     private Location(Parcel in) {
-        key = in.readInt();
+        key = in.readString();
         name = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
@@ -124,8 +160,40 @@ public class Location implements Parcelable {
         phone = in.readString();
         website = in.readString();
         address = in.readString();
+    }
 
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("Name", name);
+        result.put("City", city);
+        result.put("State", state);
+        result.put("Zip", zip);
+        result.put("Type", type);
+        result.put("Phone", phone);
+        result.put("Website", website);
+        result.put("Street Address", address);
+        GeoPoint coordinates = new GeoPoint(latitude, longitude);
+        result.put("Coordinates", coordinates);
+        result.put("Items", getItemIDs());
+        return result;
+    }
 
+    public Location(DocumentSnapshot doc) {
+        key = doc.getId();
+        Map<String, Object> docData = doc.getData();
+        name = docData.get("Name").toString();
+        GeoPoint coordinates = (GeoPoint)docData.get("Coordinates");
+        latitude = coordinates.getLatitude();
+        longitude = coordinates.getLongitude();
+        city = docData.get("City").toString();
+        state = docData.get("State").toString();
+        zip = Integer.parseInt(docData.get("Zip").toString());
+        type = docData.get("Type").toString();
+        phone = docData.get("Phone").toString();
+        website = docData.get("Website").toString();
+        address = docData.get("Street Address").toString();
+        itemIDs = docData.get("Items")  == null ? new ArrayList<>() : (List<String>)docData.get("Items");
+        setItems(itemIDs);
     }
 
     @Override
@@ -140,7 +208,7 @@ public class Location implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(key);
+        dest.writeString(key);
         dest.writeString(name);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);

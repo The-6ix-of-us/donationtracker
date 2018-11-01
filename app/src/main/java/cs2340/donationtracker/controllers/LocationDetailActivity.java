@@ -58,7 +58,7 @@ public class LocationDetailActivity extends AppCompatActivity {
 
         String locationAddress = getIntent().getStringExtra("location_address");
         TextView address = findViewById(R.id.location_detail_address);
-        address.setText("Adress: " + locationAddress);
+        address.setText("Address: " + locationAddress);
 
         String locationPhone = getIntent().getStringExtra("location_phone");
         TextView phone = findViewById(R.id.location_detail_phone);
@@ -149,7 +149,6 @@ public class LocationDetailActivity extends AppCompatActivity {
                     }
                 }
                 if (targetItem != null) {
-                    System.out.println("target item locationis: " + targetItem.getLocation());
                     Context context = view1.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
                     intent.putExtra("item_name", targetItem.getName());

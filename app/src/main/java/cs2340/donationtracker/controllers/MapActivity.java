@@ -1,20 +1,31 @@
 package cs2340.donationtracker.controllers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.GeoPoint;
+
+import cs2340.donationtracker.model.Location;
+
+import java.util.ArrayList;
 
 import cs2340.donationtracker.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ArrayList<Location> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +35,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+        locations = intent.getParcelableArrayListExtra("locations");
     }
 
 
@@ -40,9 +54,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        for (Location loc : locations) {
+            LatLng coordinates = new LatLng(loc.getLatitude(), loc.getLongitude());
+            MarkerOptions options = new MarkerOptions().position(coordinates).title(loc.getName());
+            mMap.addMarker(options);
+            builder.include(coordinates);
+        }
+
+        LatLngBounds bounds = builder.build();
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 250);
+        mMap.moveCamera(cu);
     }
 }
