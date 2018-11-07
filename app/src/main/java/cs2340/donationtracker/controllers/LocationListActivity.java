@@ -14,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -30,7 +34,11 @@ public class LocationListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private LocationAdapter adapter;
+    private Button viewMap;
+    private Intent mapIntent;
     public ArrayList<Location> locations;
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private LocationModel locationModel = LocationModel.getInstance();
 
@@ -42,7 +50,12 @@ public class LocationListActivity extends AppCompatActivity {
         Button signOut = findViewById(R.id.sign_out);
         signOut.setOnClickListener(v -> startActivity(new Intent(LocationListActivity.this, HomeActivity.class)));
 
-        locations = loadLocationData();
+        viewMap = findViewById(R.id.view_map);
+        mapIntent = new Intent(LocationListActivity.this, MapActivity.class);
+
+        locations = new ArrayList<>();
+
+        loadLocationData();
 
         mRecyclerView = findViewById(R.id.location_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -52,38 +65,21 @@ public class LocationListActivity extends AppCompatActivity {
         this.mRecyclerView.setAdapter(adapter);
     }
 
-    //This method parses the CSV file and creates an array of locations
-    private ArrayList<Location> loadLocationData() {
-        ArrayList<Location> locations = new ArrayList<>();
-        InputStream input = getResources().openRawResource(R.raw.location_data);
+    private void loadLocationData() {
+        locations = new ArrayList<>();
 
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8"))
-                );
-
-        String line;
-        try {
-            reader.readLine();
-            while ((line = reader.readLine()) != null) {
-
-                String[] tokens = line.split(",");
-
-                //reading data
-
-                Location location = new Location(tokens);
-
-                locationModel.add(location);
-                locations.add(location);
-
-                Log.d("MyActivity", "Just created;" + location);
-
+        db.collection("location-data").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int i = 0;
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Location loc = new Location(doc);
+                    locations.add(loc);
+                }
             }
-        } catch (IOException e) {
-            Log.wtf("MyActivity", "Error reading Location data");
-            e.printStackTrace();
-        }
-        return locations;
-
+            mapIntent.putParcelableArrayListExtra("locations", locations);
+            viewMap.setOnClickListener(v -> startActivity(mapIntent));
+            this.mRecyclerView.setAdapter(adapter);
+        });
     }
 
     public class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
@@ -133,7 +129,7 @@ public class LocationListActivity extends AppCompatActivity {
             name = view.findViewById(R.id.location_name);
             System.out.println(String.valueOf(name.getText()));
             String item_name = String.valueOf(name.getText());
-            ArrayList<Location> targetLocations = loadLocationData();
+            ArrayList<Location> targetLocations = new ArrayList<>(locationModel.getLocations());
             System.out.println(targetLocations.toString());
             for (int i = 0; i < targetLocations.size(); i++) {
                 if (item_name.equals(targetLocations.get(i).getName())) {
@@ -143,7 +139,8 @@ public class LocationListActivity extends AppCompatActivity {
             itemView.setOnClickListener(view1 -> {
                 System.out.println(String.valueOf(name.getText()));
                 String item_name1 = String.valueOf(name.getText());
-                ArrayList<Location> targetLocations1 = loadLocationData();
+                ArrayList<Location> targetLocations1 = new ArrayList<>();
+                targetLocations1.addAll(locationModel.getLocations());
                 System.out.println(targetLocations1.toString());
                 for (int i = 0; i < targetLocations1.size(); i++) {
                     if (item_name1.equals(targetLocations1.get(i).getName())) {
