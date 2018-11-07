@@ -59,7 +59,7 @@ public class AddDonationActivity extends AppCompatActivity {
         itemInfo[4] = value.getText().toString();
         itemInfo[5] = categorySpinner.getSelectedItem().toString();
         DonationItem item = new DonationItem(itemInfo);
-        Location loc = locationModel.findItemByName(locationSpinner.getSelectedItem().toString());
+        Location loc = locationModel.findLocationByName(locationSpinner.getSelectedItem().toString());
         loc.addItem(item);
         Intent intent = new Intent(this, LocationDetailActivity.class);
         intent.putExtra("location_name", loc.getName());
@@ -73,7 +73,7 @@ public class AddDonationActivity extends AppCompatActivity {
 
     private List<String> getLocationNames() {
         List<String> locationNames = new ArrayList<>();
-        for (Location loc: locationModel.getItems()) {
+        for (Location loc: locationModel.getLocations()) {
             locationNames.add(loc.getName());
         }
         return locationNames;

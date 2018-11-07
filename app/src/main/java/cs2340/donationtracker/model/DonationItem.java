@@ -12,7 +12,7 @@ public class DonationItem {
         name = itemInfo[0];
         description = itemInfo[1];
         descriptionFull = itemInfo[2];
-        location = LocationModel.getInstance().findItemByName(itemInfo[3]);
+        location = LocationModel.getInstance().findLocationByName(itemInfo[3]);
         value = itemInfo[4];
         category = ItemCategory.getCategory(itemInfo[5]);
     }
