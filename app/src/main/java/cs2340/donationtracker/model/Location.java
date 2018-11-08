@@ -17,8 +17,8 @@ public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final DonationItemModel itemModel = DonationItemModel.getInstance();
+//    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private final DonationItemModel itemModel = DonationItemModel.getInstance();
 
     private String key;
     private String name;
@@ -123,29 +123,29 @@ public class Location implements Parcelable {
 
     public List<String> getItemIDs() { return itemIDs; }
 
-    public void setItems(List<String> ids) {
-        items = new ArrayList<>();
-        if (ids != null && ids.size() != 0) {
-            for (String id : ids) {
-                db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DonationItem item = new DonationItem(task.getResult());
-                        itemModel.addItem(item);
-                        items.add(item);
-                    }
-                });
-            }
-        }
-    }
+//    public void setItems(List<String> ids) {
+//        items = new ArrayList<>();
+//        if (ids != null && ids.size() != 0) {
+//            for (String id : ids) {
+//                db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        DonationItem item = new DonationItem(task.getResult());
+//                        itemModel.addItem(item);
+//                        items.add(item);
+//                    }
+//                });
+//            }
+//        }
+//    }
 
     public void addItem(DonationItem item) {
-        itemModel.addItem(item);
+//        itemModel.addItem(item);
         items.add(item);
-        DocumentReference docRef = db.collection("donation-item").document();
-        item.setKey(docRef.getId());
-        itemIDs.add(docRef.getId());
-        docRef.set(item.toMap());
-        db.collection("location-data").document(key).set(toMap());
+//        DocumentReference docRef = db.collection("donation-item").document();
+//        item.setKey(docRef.getId());
+//        itemIDs.add(docRef.getId());
+//        docRef.set(item.toMap());
+//        db.collection("location-data").document(key).set(toMap());
     }
 
     private Location(Parcel in) {
@@ -193,7 +193,7 @@ public class Location implements Parcelable {
         website = docData.get("Website").toString();
         address = docData.get("Street Address").toString();
         itemIDs = docData.get("Items")  == null ? new ArrayList<>() : (List<String>)docData.get("Items");
-        setItems(itemIDs);
+//        setItems(itemIDs);
     }
 
     @Override

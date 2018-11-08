@@ -21,29 +21,29 @@ public class LocationModel {
     public static LocationModel getInstance() { return _instance; }
 
     private List<Location> locations;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private Location _currentLocation;
 
     private LocationModel() {
         locations = new ArrayList<>();
-        setLocations();
+//        setLocations();
     }
 
-    private void setLocations() {
-        db.collection("location-data").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    Location loc = new Location(doc);
-                    locations.add(loc);
-                }
-            }
-        });
-    }
+//    private void setLocations() {
+//        db.collection("location-data").get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot doc : task.getResult()) {
+//                    Location loc = new Location(doc);
+//                    locations.add(loc);
+//                }
+//            }
+//        });
+//    }
 
     public void add(Location item) {
         locations.add(item);
-        db.collection("location-data").add(item.toMap());
+//        db.collection("location-data").add(item.toMap());
     }
 
     public List<Location> getLocations() {

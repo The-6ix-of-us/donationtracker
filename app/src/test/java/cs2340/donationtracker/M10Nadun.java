@@ -44,6 +44,7 @@ public class M10Nadun {
 
     @Test
     public void iterateLocationList () {
+
         testModel.add(firstLoc);
         testModel.add(secondLoc);
 
