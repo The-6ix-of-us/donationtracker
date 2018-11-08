@@ -3,9 +3,7 @@ package cs2340.donationtracker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
@@ -16,8 +14,7 @@ import java.util.Map;
 public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
-
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseHelper firebase = FirebaseHelper.getInstance();
     private final DonationItemModel itemModel = DonationItemModel.getInstance();
 
     private String key;
@@ -127,13 +124,7 @@ public class Location implements Parcelable {
         items = new ArrayList<>();
         if (ids != null && ids.size() != 0) {
             for (String id : ids) {
-                db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DonationItem item = new DonationItem(task.getResult());
-                        itemModel.addItem(item);
-                        items.add(item);
-                    }
-                });
+                firebase.getDonationItem(id, itemModel, items);
             }
         }
     }
@@ -141,11 +132,7 @@ public class Location implements Parcelable {
     public void addItem(DonationItem item) {
         itemModel.addItem(item);
         items.add(item);
-        DocumentReference docRef = db.collection("donation-item").document();
-        item.setKey(docRef.getId());
-        itemIDs.add(docRef.getId());
-        docRef.set(item.toMap());
-        db.collection("location-data").document(key).set(toMap());
+        firebase.addDonationItem(item, this);
     }
 
     private Location(Parcel in) {

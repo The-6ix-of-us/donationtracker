@@ -1,8 +1,6 @@
 package cs2340.donationtracker.model;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,7 @@ public class DonationItem {
 
     private final LocationModel locationModel = LocationModel.getInstance();
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseHelper firebase = FirebaseHelper.getInstance();
 
     public DonationItem(String[] itemInfo) {
         name = itemInfo[0];
@@ -28,13 +26,12 @@ public class DonationItem {
         value = Integer.parseInt(itemInfo[4]);
         category = ItemCategory.getCategory(itemInfo[5]);
 
-        DocumentReference docRef = db.collection("donation-items").document();
-        key = docRef.getId();
-        docRef.set(toMap());
+        firebase.addDonationItem(this);
     }
 
     public DonationItem(DocumentSnapshot item) {
         key = item.getId();
+        System.out.println("key: " + item.getId());
         Map<String, Object> docData = item.getData();
         name = docData.get("Name").toString();
         description = docData.get("Description").toString();

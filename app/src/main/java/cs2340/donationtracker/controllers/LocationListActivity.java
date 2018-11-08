@@ -7,25 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import cs2340.donationtracker.R;
+import cs2340.donationtracker.model.FirebaseHelper;
 import cs2340.donationtracker.model.Location;
 import cs2340.donationtracker.model.LocationModel;
 import cs2340.donationtracker.model.OnItemClickListener;
@@ -38,7 +29,7 @@ public class LocationListActivity extends AppCompatActivity {
     private Intent mapIntent;
     public ArrayList<Location> locations;
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseHelper firebase = FirebaseHelper.getInstance();
 
     private LocationModel locationModel = LocationModel.getInstance();
 
@@ -68,18 +59,13 @@ public class LocationListActivity extends AppCompatActivity {
     private void loadLocationData() {
         locations = new ArrayList<>();
 
-        db.collection("location-data").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                int i = 0;
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    Location loc = new Location(doc);
-                    locations.add(loc);
-                }
-            }
-            mapIntent.putParcelableArrayListExtra("locations", locations);
-            viewMap.setOnClickListener(v -> startActivity(mapIntent));
-            this.mRecyclerView.setAdapter(adapter);
-        });
+        firebase.getLocations(locations, this);
+    }
+
+    public void setAdapter(ArrayList<Location> locations) {
+        mapIntent.putParcelableArrayListExtra("locations", locations);
+        viewMap.setOnClickListener(v -> startActivity(mapIntent));
+        this.mRecyclerView.setAdapter(adapter);
     }
 
     public class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {

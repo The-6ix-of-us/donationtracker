@@ -1,8 +1,5 @@
 package cs2340.donationtracker.model;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +7,7 @@ import java.util.Map;
 
 public class DonationItemModel {
     private static final DonationItemModel _instance = new DonationItemModel();
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseHelper firebase = FirebaseHelper.getInstance();
 
     public static DonationItemModel getInstance() { return _instance; }
 
@@ -24,15 +21,7 @@ public class DonationItemModel {
     }
 
     private void setItems() {
-        db.collection("donation-items").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    DonationItem item = new DonationItem(doc);
-                    itemsMap.put(doc.getId(), item);
-                    items.add(item);
-                }
-            }
-        });
+        firebase.getDonationItems(items, itemsMap);
     }
 
     public DonationItem getItemByID(String id) { return itemsMap.get(id); }

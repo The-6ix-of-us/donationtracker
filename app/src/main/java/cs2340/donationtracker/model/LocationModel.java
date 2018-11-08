@@ -1,16 +1,9 @@
 package cs2340.donationtracker.model;
 
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cs2340.donationtracker.controllers.LocationListActivity;
 
 /**
  * A class representing a collection of locations
@@ -21,7 +14,7 @@ public class LocationModel {
     public static LocationModel getInstance() { return _instance; }
 
     private List<Location> locations;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseHelper firebase = FirebaseHelper.getInstance();
 
     private Location _currentLocation;
 
@@ -31,19 +24,12 @@ public class LocationModel {
     }
 
     private void setLocations() {
-        db.collection("location-data").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    Location loc = new Location(doc);
-                    locations.add(loc);
-                }
-            }
-        });
+        firebase.getLocations(locations);
     }
 
     public void add(Location item) {
         locations.add(item);
-        db.collection("location-data").add(item.toMap());
+        firebase.addLocation(item);
     }
 
     public List<Location> getLocations() {
