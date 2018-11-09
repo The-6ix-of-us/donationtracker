@@ -10,6 +10,11 @@ import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.Location;
 import cs2340.donationtracker.model.LocationModel;
 
+/**
+ * Created by Emily Wilson
+ *
+ * Creates the item detail activity which shows the item's attributes
+ */
 public class ItemDetailActivity extends AppCompatActivity {
 
     private Location location;
@@ -21,34 +26,34 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         String itemName = getIntent().getStringExtra("item_name");
         TextView name = findViewById(R.id.item_detail_name);
-        name.setText("Name: " + itemName);
+        name.setText(String.format("Name: %s", itemName));
 
         String itemLocation = getIntent().getStringExtra("item_location");
         TextView type = findViewById(R.id.item_detail_location);
-        type.setText("Location: " + itemLocation);
+        type.setText(String.format("Location: %s", itemLocation));
         location = LocationModel.getInstance().findLocationByName(itemLocation);
 
         String itemValue = getIntent().getStringExtra("item_value");
         TextView phone = findViewById(R.id.item_detail_value);
-        phone.setText("Value: " + itemValue);
+        phone.setText(String.format("Value: %s", itemValue));
 
         String itemDescription = getIntent().getStringExtra("item_description");
-        TextView longitude = findViewById(R.id.item_detail_description);
-        longitude.setText("Brief Description: " + itemDescription);
+        TextView shortDescription = findViewById(R.id.item_detail_description);
+        shortDescription.setText(String.format("Brief Description: %s", itemDescription));
 
         String itemCategory = getIntent().getStringExtra("item_category");
-        TextView latitude = findViewById(R.id.item_detail_category);
-        latitude.setText("Category: " + itemCategory);
+        TextView category = findViewById(R.id.item_detail_category);
+        category.setText(String.format("Category: %s", itemCategory));
 
         String itemDescriptionFull = getIntent().getStringExtra("item_description_full");
-        TextView address = findViewById(R.id.item_detail_description_full);
-        address.setText("Full Description: " + itemDescriptionFull);
+        TextView longDescription = findViewById(R.id.item_detail_description_full);
+        longDescription.setText(String.format("Full Description: %s", itemDescriptionFull));
 
         Button back = findViewById(R.id.back_to_location);
         back.setOnClickListener(v -> onGoBack());
     }
 
-    protected void onGoBack() {
+    private void onGoBack() {
         Intent intent = new Intent(this, LocationDetailActivity.class);
         intent.putExtra("location_name", location.getName());
         intent.putExtra("location_type", location.getType());

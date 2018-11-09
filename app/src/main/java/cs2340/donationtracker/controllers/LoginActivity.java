@@ -19,23 +19,21 @@ import cs2340.donationtracker.model.Credentials;
 import cs2340.donationtracker.model.User;
 
 /**
- * A login screen that offers login via username/password.
+ * Created by Peter Franzek
+ *
+ * Initializes the Login activity and checks for correct authentication of the
+ * username and password
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
     private EditText mUsernameView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-    private User sample = new User("user", "pass");
-    private static ArrayList<User> users = new ArrayList<>();
-    protected static Credentials credentials = new Credentials(users);
+    private final User sample = new User("user", "pass");
+    private static final ArrayList<User> users = new ArrayList<>();
+    protected static final Credentials credentials = new Credentials(users);
 
 
     @Override
@@ -63,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         cancelSignIn.setOnClickListener(v ->
                 startActivity(new Intent(LoginActivity.this, HomeActivity.class)));
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -122,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
      * Represents a login task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUsername;
         private final String mPassword;
@@ -134,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             boolean loginAttempt = false;
             User user = new User(mUsername, mPassword);

@@ -6,19 +6,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DonationItem {
     private String key;
-    private String name;
-    private String description;
-    private String descriptionFull;
-    private Location location;
+    private final String name;
+    private final String description;
+    private final String descriptionFull;
+    private final Location location;
     private int value;
-    private ItemCategory category;
-
-    private final LocationModel locationModel = LocationModel.getInstance();
-
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final ItemCategory category;
 
     public DonationItem(String[] itemInfo) {
         name = itemInfo[0];
@@ -28,6 +25,7 @@ public class DonationItem {
         value = Integer.parseInt(itemInfo[4]);
         category = ItemCategory.getCategory(itemInfo[5]);
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("donation-items").document();
         key = docRef.getId();
         docRef.set(toMap());
@@ -36,9 +34,10 @@ public class DonationItem {
     public DonationItem(DocumentSnapshot item) {
         key = item.getId();
         Map<String, Object> docData = item.getData();
-        name = docData.get("Name").toString();
+        name = Objects.requireNonNull(docData).get("Name").toString();
         description = docData.get("Description").toString();
         descriptionFull = docData.get("Description Full").toString();
+        LocationModel locationModel = LocationModel.getInstance();
         location = locationModel.findLocationById(docData.get("Location ID").toString());
         category = ItemCategory.getCategory(docData.get("Category").toString());
     }

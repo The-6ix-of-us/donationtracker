@@ -10,6 +10,11 @@ import android.widget.EditText;
 import cs2340.donationtracker.model.User;
 import cs2340.donationtracker.R;
 
+/**
+ * Created by Peter Franzek
+ *
+ * Creates the Register activity and checks for valid inputs into username and password
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText mUsernameView;
@@ -24,21 +29,10 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
 
         Button register = findViewById(R.id.username_register_in_button);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptRegister();
-            }
-        });
+        register.setOnClickListener(v -> attemptRegister());
 
         Button cancelSignIn = findViewById(R.id.cancel_button);
-        cancelSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-            }
-        });
-
+        cancelSignIn.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, HomeActivity.class)));
 
     }
 

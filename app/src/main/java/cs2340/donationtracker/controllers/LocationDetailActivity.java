@@ -20,15 +20,16 @@ import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.DonationItem;
 import cs2340.donationtracker.model.Location;
 import cs2340.donationtracker.model.LocationModel;
-import cs2340.donationtracker.model.OnItemClickListener;
 
+/**
+ * Created by Peter Franzek
+ *
+ * Creates the Location detail activity which shows the location's attributes
+ * and donation items that are associated with it
+ */
 public class LocationDetailActivity extends AppCompatActivity {
 
     private Location location;
-    private ArrayList<DonationItem> items;
-
-    private RecyclerView mRecyclerView;
-    private LocationDetailActivity.ItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,30 +40,29 @@ public class LocationDetailActivity extends AppCompatActivity {
 
         String locationName = getIntent().getStringExtra("location_name");
         TextView name = findViewById(R.id.location_detail_name);
-        name.setText("Name: " + locationName);
+        name.setText(String.format("Name: %s", locationName));
         location = LocationModel.getInstance().findLocationByName(locationName);
-        items = new ArrayList<>();
-        items.addAll(location.getItems());
+        ArrayList<DonationItem> items = new ArrayList<>(location.getItems());
 
         String locationType = getIntent().getStringExtra("location_type");
         TextView type = findViewById(R.id.location_detail_type);
-        type.setText("Type: " + locationType);
+        type.setText(String.format("Type: %s", locationType));
 
         String locationLongitude = getIntent().getStringExtra("location_longitude");
         TextView longitude = findViewById(R.id.location_detail_longitude);
-        longitude.setText("Longitude: " + locationLongitude);
+        longitude.setText(String.format("Longitude: %s", locationLongitude));
 
         String locationLatitude = getIntent().getStringExtra("location_latitude");
         TextView latitude = findViewById(R.id.location_detail_latitude);
-        latitude.setText("Latitude: " + locationLatitude);
+        latitude.setText(String.format("Latitude: %s", locationLatitude));
 
         String locationAddress = getIntent().getStringExtra("location_address");
         TextView address = findViewById(R.id.location_detail_address);
-        address.setText("Address: " + locationAddress);
+        address.setText(String.format("Address: %s", locationAddress));
 
         String locationPhone = getIntent().getStringExtra("location_phone");
         TextView phone = findViewById(R.id.location_detail_phone);
-        phone.setText("Phone: " + locationPhone);
+        phone.setText(String.format("Phone: %s", locationPhone));
 
         Button addItem = findViewById(R.id.add_item);
         addItem.setOnClickListener(v -> startActivity(new Intent(LocationDetailActivity.this, AddDonationActivity.class)));
@@ -70,18 +70,17 @@ public class LocationDetailActivity extends AppCompatActivity {
         Button signOut = findViewById(R.id.sign_out);
         signOut.setOnClickListener(v -> startActivity(new Intent(LocationDetailActivity.this, HomeActivity.class)));
 
-        mRecyclerView = findViewById(R.id.item_list);
+        RecyclerView mRecyclerView = findViewById(R.id.item_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        adapter = new LocationDetailActivity.ItemAdapter(items);
-        this.mRecyclerView.setAdapter(adapter);
+        ItemAdapter adapter = new ItemAdapter(items);
+        mRecyclerView.setAdapter(adapter);
     }
 
-    public class ItemAdapter extends RecyclerView.Adapter<LocationDetailActivity.ItemViewHolder> {
+    class ItemAdapter extends RecyclerView.Adapter<LocationDetailActivity.ItemViewHolder> {
 
-        private ArrayList<DonationItem> items;
-        private OnItemClickListener clickListener;
+        private final ArrayList<DonationItem> items;
 
         private ItemAdapter(ArrayList<DonationItem> items) {
             this.items = items;
@@ -96,7 +95,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(LocationDetailActivity.ItemViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull LocationDetailActivity.ItemViewHolder holder, int position) {
             DonationItem item = items.get(position);
 
             holder.name.setText(item.getName());
@@ -114,14 +113,12 @@ public class LocationDetailActivity extends AppCompatActivity {
 
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
-        public final View view;
-        public final TextView name;
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+        final TextView name;
         private DonationItem targetItem;
 
         private ItemViewHolder(View view) {
             super(view);
-            this.view = view;
             name = view.findViewById(R.id.item_name);
             System.out.println(String.valueOf(name.getText()));
             String item_name = String.valueOf(name.getText());

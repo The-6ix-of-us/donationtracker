@@ -8,16 +8,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by Emily Wilson
+ *
+ * Represents a collection of donation items
+ */
 public class DonationItemModel {
     private static final DonationItemModel _instance = new DonationItemModel();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static DonationItemModel getInstance() { return _instance; }
+    static DonationItemModel getInstance() { return _instance; }
 
-    private Map<String, DonationItem> itemsMap;
-    private List<DonationItem> items;
+    private final Map<String, DonationItem> itemsMap;
+    private final List<DonationItem> items;
 
-    public DonationItemModel() {
+    private DonationItemModel() {
         itemsMap = new HashMap<>();
         items = new ArrayList<>();
         setItems();
@@ -35,11 +40,21 @@ public class DonationItemModel {
         });
     }
 
+    /**
+     * Gets the donation item associated with the unique id
+     * @param id    String that uniquely identifies an item
+     * @return the donation item that has the unique id
+     */
     public DonationItem getItemByID(String id) { return itemsMap.get(id); }
 
+
+    /**
+     * Getter to retrieve the list of Donation items
+     * @return items The list of Donation items
+     */
     public List<DonationItem> getItems() { return items; }
 
-    public void addItem(DonationItem item) {
+    void addItem(DonationItem item) {
         itemsMap.put(item.getKey(), item);
         items.add(item);
     }

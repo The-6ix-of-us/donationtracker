@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,30 +16,29 @@ import android.widget.TextView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.Location;
 import cs2340.donationtracker.model.LocationModel;
-import cs2340.donationtracker.model.OnItemClickListener;
 
+/**
+ * Created by Peter Franzek
+ *
+ * Creates the Location list activity which shows the list of locations
+ * which can be clicked on to access their specific attributes
+ */
 public class LocationListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private LocationAdapter adapter;
     private Button viewMap;
     private Intent mapIntent;
-    public ArrayList<Location> locations;
+    private ArrayList<Location> locations;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private LocationModel locationModel = LocationModel.getInstance();
+    private final LocationModel locationModel = LocationModel.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +80,9 @@ public class LocationListActivity extends AppCompatActivity {
         });
     }
 
-    public class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
+    class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
 
-        private ArrayList<Location> locations;
-        private OnItemClickListener clickListener;
+        private final ArrayList<Location> locations;
 
         private LocationAdapter(ArrayList<Location> locations) {
             this.locations = locations;
@@ -100,7 +97,7 @@ public class LocationListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(LocationViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
             Location location = locations.get(position);
 
             holder.name.setText(location.getName());
@@ -118,14 +115,12 @@ public class LocationListActivity extends AppCompatActivity {
 
     }
 
-    public class LocationViewHolder extends RecyclerView.ViewHolder {
-        public final View view;
-        public final TextView name;
+    class LocationViewHolder extends RecyclerView.ViewHolder {
+        final TextView name;
         private Location targetLocation;
 
         private LocationViewHolder(View view) {
             super(view);
-            this.view = view;
             name = view.findViewById(R.id.location_name);
             System.out.println(String.valueOf(name.getText()));
             String item_name = String.valueOf(name.getText());
@@ -139,8 +134,7 @@ public class LocationListActivity extends AppCompatActivity {
             itemView.setOnClickListener(view1 -> {
                 System.out.println(String.valueOf(name.getText()));
                 String item_name1 = String.valueOf(name.getText());
-                ArrayList<Location> targetLocations1 = new ArrayList<>();
-                targetLocations1.addAll(locationModel.getLocations());
+                ArrayList<Location> targetLocations1 = new ArrayList<>(locationModel.getLocations());
                 System.out.println(targetLocations1.toString());
                 for (int i = 0; i < targetLocations1.size(); i++) {
                     if (item_name1.equals(targetLocations1.get(i).getName())) {
