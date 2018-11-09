@@ -12,7 +12,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * A class that holds the information for a store
+ */
+
+@SuppressWarnings("FieldMayBeFinal")
 public class Location implements Parcelable {
         //could have used a string array to store all attributes
         //mostly just busy work and good coding practice.
@@ -54,78 +60,148 @@ public class Location implements Parcelable {
                 '}';
     }
 
-    public Location (String [] details) {
+// --Commented out by Inspection START (11/08/2018 7:20 PM):
+//    /**
+//     * Constructor for a location
+//     * @param details the details of the location
+//     */
+//    public Location (String [] details) {
+//
+//        /* Key is the auto-generated document ID from firebase */
+//        key = details[0];
+//        name = details[1];
+//
+//        latitude = Double.parseDouble(details[2]);
+//        longitude = Double.parseDouble(details[3]);
+//
+//        address = details[4];
+//        city = details[5];
+//        state = details[6];
+//        zip = Integer.parseInt(details[7]);
+//
+//        type = details[8];
+//        phone = details[9];
+//        website = details[10];
+//
+//        items = new ArrayList<>();
+//        itemIDs = new ArrayList<>();
+//
+//    }
+// --Commented out by Inspection STOP (11/08/2018 7:20 PM)
 
-        /* Key is the auto-generated document ID from firebase */
-        key = details[0];
-        name = details[1];
-
-        latitude = Double.parseDouble(details[2]);
-        longitude = Double.parseDouble(details[3]);
-
-        address = details[4];
-        city = details[5];
-        state = details[6];
-        zip = Integer.parseInt(details[7]);
-
-        type = details[8];
-        phone = details[9];
-        website = details[10];
-
-        items = new ArrayList<>();
-        itemIDs = new ArrayList<>();
-
-    }
-
+    /**
+     * Getter for the Key field
+     * @return Key of the Location
+     */
     protected String getKey() {
         return key;
     }
 
+    /**
+     * Getter for the name field
+     * @return the name of the location
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for the latitude of the location
+     * @return the latitude of the location
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * Getter for the Longitude of the location
+     * @return the longitude of the location
+     */
     public double getLongitude() {
         return longitude;
     }
 
-    public String getCity() {
-        return city;
-    }
+// --Commented out by Inspection START (11/08/2018 7:20 PM):
+//    /**
+//     * Getter for the City of the location
+//     * @return the city of the location
+//     */
+//    public String getCity() {
+//        return city;
+//    }
+// --Commented out by Inspection STOP (11/08/2018 7:20 PM)
 
-    public String getState() {
-        return state;
-    }
+// --Commented out by Inspection START (11/08/2018 7:20 PM):
+//    /**
+//     * Getter for the State of the location
+//     * @return the state of the location
+//     */
+//    public String getState() {
+//        return state;
+//    }
+// --Commented out by Inspection STOP (11/08/2018 7:20 PM)
 
-    public int getZip() {
-        return zip;
-    }
+// --Commented out by Inspection START (11/08/2018 7:21 PM):
+//    /**
+//     * Getter for the Zip of the location
+//     * @return the zip of the location
+//     */
+//    public int getZip() {
+//        return zip;
+//    }
+// --Commented out by Inspection STOP (11/08/2018 7:21 PM)
 
+    /**
+     * Getter for the type of the location
+     * @return the type of the location
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Getter for the phone number of the location
+     * @return the phone number of the location
+     */
     public String getPhone() {
         return phone;
     }
 
-    public String getWebsite() {
-        return website;
-    }
+// --Commented out by Inspection START (11/08/2018 7:21 PM):
+//    /**
+//     * Getter for the website of the location
+//     * @return the website of the location
+//     */
+//    public String getWebsite() {
+//        return website;
+//    }
+// --Commented out by Inspection STOP (11/08/2018 7:21 PM)
 
+    /**
+     * Getter for the address of the location
+     * @return the address of the location
+     */
     public String getAddress() { return address; }
 
+    /**
+     * Getter for the list of items at the location
+     * @return A list of the donated items at the location
+     */
     public List<DonationItem> getItems() { return items; }
 
-    public List<String> getItemIDs() { return itemIDs; }
+    /**
+     * Getter for the list of item ids
+     * @return a list of item ids.
+     */
+    private List<String> getItemIDs() { return itemIDs; }
 
-    public void setItems(List<String> ids) {
+    /**
+     * Sets the list of items at the location
+     * @param ids the list of item ids
+     */
+    private void setItems(List<String> ids) {
         items = new ArrayList<>();
-        if (ids != null && ids.size() != 0) {
+        if ((ids != null) && (!ids.isEmpty()) ) {
             for (String id : ids) {
                 db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -138,6 +214,10 @@ public class Location implements Parcelable {
         }
     }
 
+    /**
+     * Adds an item to the donation list of the location
+     * @param item the item to be added to the donation list
+     */
     public void addItem(DonationItem item) {
         itemModel.addItem(item);
         items.add(item);
@@ -162,6 +242,11 @@ public class Location implements Parcelable {
         address = in.readString();
     }
 
+    /**
+     * Method to create a map representing the location
+     * @return a map with the fields of the location.
+     */
+
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
         result.put("Name", name);
@@ -178,10 +263,15 @@ public class Location implements Parcelable {
         return result;
     }
 
+    /**
+     * constructor using a document Snapshot
+     * @param doc DocumentSnapshot with the location details.
+     */
+    @SuppressWarnings("unchecked")
     public Location(DocumentSnapshot doc) {
         key = doc.getId();
         Map<String, Object> docData = doc.getData();
-        name = docData.get("Name").toString();
+        name = Objects.requireNonNull(docData).get("Name").toString();
         GeoPoint coordinates = (GeoPoint)docData.get("Coordinates");
         latitude = coordinates.getLatitude();
         longitude = coordinates.getLongitude();
@@ -192,7 +282,8 @@ public class Location implements Parcelable {
         phone = docData.get("Phone").toString();
         website = docData.get("Website").toString();
         address = docData.get("Street Address").toString();
-        itemIDs = docData.get("Items")  == null ? new ArrayList<>() : (List<String>)docData.get("Items");
+        itemIDs = (docData.get("Items") == null) ? new ArrayList<>() :
+                (List<String>) docData.get("Items");
         setItems(itemIDs);
     }
 
@@ -226,12 +317,15 @@ public class Location implements Parcelable {
      * Should not have to edit this method if the constructor and write method are
      * working correctly.
      */
+
     public static final Parcelable.Creator<Location> CREATOR
             = new Parcelable.Creator<Location>() {
+        @Override
         public Location createFromParcel(Parcel in) {
             return new Location(in);
         }
 
+        @Override
         public Location[] newArray(int size) {
             return new Location[size];
         }
