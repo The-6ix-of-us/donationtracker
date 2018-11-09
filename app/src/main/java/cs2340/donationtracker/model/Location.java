@@ -175,7 +175,7 @@ public class Location implements Parcelable {
 
     private void setItems(List<String> ids) {
         items = new ArrayList<>();
-        if (ids != null && ids.size() != 0) {
+        if ((ids != null) && !ids.isEmpty()) {
             for (String id : ids) {
                 db.collection("donation-item").document(id).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -250,7 +250,7 @@ public class Location implements Parcelable {
         phone = docData.get("Phone").toString();
         website = docData.get("Website").toString();
         address = docData.get("Street Address").toString();
-        itemIDs = docData.get("Items") == null ? new ArrayList<>() :
+        itemIDs = (docData.get("Items") == null) ? new ArrayList<>() :
                 (List<String>) docData.get("Items");
         setItems(itemIDs);
     }
