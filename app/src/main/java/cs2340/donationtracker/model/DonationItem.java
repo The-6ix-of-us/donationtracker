@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Created by Emily Wilson
+ *
+ * A class representing a donation item
+ */
 public class DonationItem {
     private String key;
     private final String name;
@@ -17,6 +22,10 @@ public class DonationItem {
     private int value;
     private final ItemCategory category;
 
+    /**
+     * Constructor for a donation item that takes in a string array of an item's attributes
+     * @param itemInfo      string array of donation item's attributes
+     */
     public DonationItem(String[] itemInfo) {
         name = itemInfo[0];
         description = itemInfo[1];
@@ -31,6 +40,10 @@ public class DonationItem {
         docRef.set(toMap());
     }
 
+    /**
+     * Constructor for a donation item that takes in a firebase document snapshot
+     * @param item      firebase document snapshot
+     */
     public DonationItem(DocumentSnapshot item) {
         key = item.getId();
         Map<String, Object> docData = item.getData();
@@ -42,17 +55,47 @@ public class DonationItem {
         category = ItemCategory.getCategory(docData.get("Category").toString());
     }
 
-    public String getKey() { return key; }
-    public void setKey(String key) { this.key = key; }
+    String getKey() { return key; }
+    void setKey(String key) { this.key = key; }
+
+    /**
+     * Gets the name of the item
+     * @return item's name
+     */
     public String getName() { return name; }
+
+    /**
+     * Gets the short description
+     * @return item's short description
+     */
     public String getDescription() { return description; }
+
+    /**
+     * Gets the full description
+     * @return item's full description
+     */
     public String getDescriptionFull() { return descriptionFull; }
+
+    /**
+     * Gets the location the item belongs to
+     * @return location item belongs to
+     */
     public Location getLocation() { return location; }
+
+    /**
+     * Gets the value of the item
+     * @return item's value
+     */
     public int getValue() { return value; }
+
+    /**
+     * Gets the category of the item
+     * @return item's category
+     */
     public ItemCategory getCategory() { return category; }
 
 
-    public Map<String, Object> toMap() {
+    Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
         result.put("Name", name);
         result.put("Description", description);

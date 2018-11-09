@@ -3,27 +3,41 @@ package cs2340.donationtracker.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Peter Franzek
+ *
+ * A class representing a credentials object which is a list of users
+ */
 public class Credentials {
 
-    private List<User> _users;
+    private final List<User> users;
 
-    public Credentials(ArrayList<User> users) {
-        _users = new ArrayList<>();
-        _users = users;
+    /**
+     * Constructor for a credentials objects
+     */
+    public Credentials() {
+        this.users = new ArrayList<>();
     }
 
+    /**
+     * Gets the list of users
+     * @return the list of users associated with the credential
+     */
     public List<User> getUsers() {
-        return _users;
+        return users;
     }
 
-    public boolean addUser(User user) {
-        for (User u : _users) {
+    /**
+     * Adds user to credential
+     * @param user      adds a user to the credentials objects
+     */
+    public void addUser(User user) {
+        for (User u : users) {
             if (u.getUsername().equals(user.getUsername())) {
-                return false;
+                return;
             }
         }
-        _users.add(user);
-        return true;
+        users.add(user);
     }
 
 }

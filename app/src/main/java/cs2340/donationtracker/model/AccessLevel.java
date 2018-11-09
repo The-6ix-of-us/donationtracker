@@ -1,5 +1,10 @@
 package cs2340.donationtracker.model;
 
+/**
+ * Created by Peter Franzek
+ *
+ * An enum representing the access level options
+ */
 public enum AccessLevel {
 
     ADMIN ("Admin"),
@@ -12,10 +17,10 @@ public enum AccessLevel {
     /**
      * Constructor for the enumeration
      *
-     * @param paccessLevel   class standing abbreviation
+     * @param accessLevel   class standing abbreviation
      */
-    AccessLevel(String paccessLevel) {
-        accessLevel = paccessLevel;
+    AccessLevel(String accessLevel) {
+        this.accessLevel = accessLevel;
     }
 
     /**

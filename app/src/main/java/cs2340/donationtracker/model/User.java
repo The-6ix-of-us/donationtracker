@@ -1,34 +1,48 @@
 package cs2340.donationtracker.model;
 
+/**
+ * Created by Peter Franzek
+ *
+ * A class representing a user
+ */
 public class User {
 
-    private String _username;
-    private String _password;
+    private String username;
+    private String password;
 
+    /**
+     * Constructor for a user that takes in a username and password
+     * @param username      username of the user
+     * @param password      password of the user
+     */
     public User(String username, String password) {
-        _username = username;
-        _password = password;
+        this.username = username;
+        this.password = password;
     }
 
     @Override
     public boolean equals(Object o) {
+        if (getClass() != o.getClass()) { return false; }
         User u = (User) o;
-        return (u.getUsername().equals(_username) && u.getPassword().equals(_password));
+        return (u.getUsername().equals(username) && u.getPassword().equals(password));
     }
 
+    /**
+     * Gets the username of the user
+     * @return user's username
+     */
     public String getUsername() {
-        return _username;
+        return username;
     }
+
     private void setUsername(String username) {
-        _username = username;
+        this.username = username;
     }
 
-    private String getPassword() {
-        return _password;
-    }
+    private String getPassword() { return password; }
+
     private void setPassword(String password) {
-        _password = password;
+        this.password = password;
     }
-
 
 }

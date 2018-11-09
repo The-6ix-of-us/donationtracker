@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private final User sample = new User("user", "pass");
     private static final ArrayList<User> users = new ArrayList<>();
-    protected static final Credentials credentials = new Credentials(users);
+    protected static final Credentials credentials = new Credentials();
 
 
     @Override

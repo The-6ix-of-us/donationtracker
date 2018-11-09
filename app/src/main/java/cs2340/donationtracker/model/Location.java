@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
+/**
+ * Created by Nadun Ranawaka
+ *
+ * A class representing an individual location
+ */
 public class Location implements Parcelable {
-        //could have used a string array to store all attributes
-        //mostly just busy work and good coding practice.
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final DonationItemModel itemModel = DonationItemModel.getInstance();
@@ -186,6 +188,10 @@ public class Location implements Parcelable {
         }
     }
 
+    /**
+     * Adds a donation item that is associate with the location and added to firebase database
+     * @param item    donation item to be added
+     */
     public void addItem(DonationItem item) {
         itemModel.addItem(item);
         items.add(item);
@@ -280,10 +286,20 @@ public class Location implements Parcelable {
      */
     public static final Parcelable.Creator<Location> CREATOR
             = new Parcelable.Creator<Location>() {
+
+        /**
+         * Gets the location created from Parcel
+         * @return location
+         */
         public Location createFromParcel(Parcel in) {
             return new Location(in);
         }
 
+        /**
+         * Creates an array of locations
+         * @param size      creates a location array with size based on integer supplied
+         * @return location array
+         */
         public Location[] newArray(int size) {
             return new Location[size];
         }
