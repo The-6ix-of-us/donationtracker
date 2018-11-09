@@ -71,7 +71,7 @@ public class AddDonationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private List<String> getLocationNames() {
+    public List<String> getLocationNames() {
         List<String> locationNames = new ArrayList<>();
         for (Location loc: locationModel.getLocations()) {
             locationNames.add(loc.getName());
