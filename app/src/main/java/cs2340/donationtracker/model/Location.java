@@ -250,7 +250,8 @@ public class Location implements Parcelable {
         phone = docData.get("Phone").toString();
         website = docData.get("Website").toString();
         address = docData.get("Street Address").toString();
-        itemIDs = docData.get("Items") == null ? new ArrayList<>() : (List<String>) docData.get("Items");
+        itemIDs = docData.get("Items") == null ? new ArrayList<>() :
+                (List<String>) docData.get("Items");
         setItems(itemIDs);
     }
 
@@ -291,6 +292,7 @@ public class Location implements Parcelable {
          * Gets the location created from Parcel
          * @return location
          */
+        @Override
         public Location createFromParcel(Parcel in) {
             return new Location(in);
         }
@@ -300,6 +302,7 @@ public class Location implements Parcelable {
          * @param size      creates a location array with size based on integer supplied
          * @return location array
          */
+        @Override
         public Location[] newArray(int size) {
             return new Location[size];
         }
