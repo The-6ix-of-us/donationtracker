@@ -24,28 +24,31 @@ public class ItemDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
 
-        String itemName = getIntent().getStringExtra("item_name");
+        Intent intent = getIntent();
+
+        String itemName = intent.getStringExtra("item_name");
         TextView name = findViewById(R.id.item_detail_name);
         name.setText(String.format("Name: %s", itemName));
 
-        String itemLocation = getIntent().getStringExtra("item_location");
+        String itemLocation = intent.getStringExtra("item_location");
         TextView type = findViewById(R.id.item_detail_location);
         type.setText(String.format("Location: %s", itemLocation));
-        location = LocationModel.getInstance().findLocationByName(itemLocation);
+        LocationModel locationModel = LocationModel.getInstance();
+        location = locationModel.findLocationByName(itemLocation);
 
-        String itemValue = getIntent().getStringExtra("item_value");
+        String itemValue = intent.getStringExtra("item_value");
         TextView phone = findViewById(R.id.item_detail_value);
         phone.setText(String.format("Value: %s", itemValue));
 
-        String itemDescription = getIntent().getStringExtra("item_description");
+        String itemDescription = intent.getStringExtra("item_description");
         TextView shortDescription = findViewById(R.id.item_detail_description);
         shortDescription.setText(String.format("Brief Description: %s", itemDescription));
 
-        String itemCategory = getIntent().getStringExtra("item_category");
+        String itemCategory = intent.getStringExtra("item_category");
         TextView category = findViewById(R.id.item_detail_category);
         category.setText(String.format("Category: %s", itemCategory));
 
-        String itemDescriptionFull = getIntent().getStringExtra("item_description_full");
+        String itemDescriptionFull = intent.getStringExtra("item_description_full");
         TextView longDescription = findViewById(R.id.item_detail_description_full);
         longDescription.setText(String.format("Full Description: %s", itemDescriptionFull));
 

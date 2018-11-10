@@ -1,5 +1,6 @@
 package cs2340.donationtracker.model;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,7 +15,6 @@ import java.util.Objects;
  * A class representing a donation item
  */
 public class DonationItem {
-    private String key;
     private final String name;
     private final String description;
     private final String descriptionFull;
@@ -30,13 +30,15 @@ public class DonationItem {
         name = itemInfo[0];
         description = itemInfo[1];
         descriptionFull = itemInfo[2];
-        location = LocationModel.getInstance().findLocationByName(itemInfo[3]);
+        LocationModel locationModel = LocationModel.getInstance();
+        location = locationModel.findLocationByName(itemInfo[3]);
         value = Integer.parseInt(itemInfo[4]);
         category = ItemCategory.getCategory(itemInfo[5]);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("donation-items").document();
-        key = docRef.getId();
+
+        CollectionReference collection = db.collection("donation-items");
+        DocumentReference docRef = collection.document();
         docRef.set(toMap());
     }
 
@@ -44,19 +46,20 @@ public class DonationItem {
      * Constructor for a donation item that takes in a firebase document snapshot
      * @param item      firebase document snapshot
      */
-    public DonationItem(DocumentSnapshot item) {
-        key = item.getId();
-        Map<String, Object> docData = item.getData();
-        name = Objects.requireNonNull(docData).get("Name").toString();
-        description = docData.get("Description").toString();
-        descriptionFull = docData.get("Description Full").toString();
+    DonationItem(DocumentSnapshot item) {
+        Map<String, Object> docData = Objects.requireNonNull(item.getData());
+        Object _name = docData.get("Name");
+        name = _name.toString();
+        Object _description = docData.get("Description");
+        description = _description.toString();
+        Object _descriptionFull = docData.get("Description Full");
+        descriptionFull = _descriptionFull.toString();
         LocationModel locationModel = LocationModel.getInstance();
-        location = locationModel.findLocationById(docData.get("Location ID").toString());
-        category = ItemCategory.getCategory(docData.get("Category").toString());
+        Object _id = docData.get("Location ID");
+        location = locationModel.findLocationById(_id.toString());
+        Object _category = docData.get("Category");
+        category = ItemCategory.getCategory(_category.toString());
     }
-
-    String getKey() { return key; }
-    void setKey(String key) { this.key = key; }
 
     /**
      * Gets the name of the item

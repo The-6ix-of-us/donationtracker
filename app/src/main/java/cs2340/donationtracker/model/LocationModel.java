@@ -13,7 +13,7 @@ import java.util.List;
  *
  * A class representing a collection of locations
  */
-public class LocationModel {
+public final class LocationModel {
     private static final LocationModel _instance = new LocationModel();
 
 
@@ -75,7 +75,8 @@ public class LocationModel {
 
     Location findLocationById(String id) {
         for (Location d : locations) {
-            if (d.getKey().equals(id)) return d;
+            String _key = d.getKey();
+            if (_key.equals(id)) { return d; }
         }
         Log.d("MYAPP", "Warning - Failed to find id: " + id);
         return null;
@@ -87,7 +88,7 @@ public class LocationModel {
      */
     public Location findLocationByName(String name) {
         for (Location d : locations) {
-            if (d.getName().equals(name)) return d;
+            if (d.getName().equals(name)) { return d; }
         }
         Log.d("MYAPP", "Warning - Failed to find name: " + name);
         return null;

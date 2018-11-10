@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.Location;
@@ -46,7 +50,8 @@ public class LocationListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location_list);
 
         Button signOut = findViewById(R.id.sign_out);
-        signOut.setOnClickListener(v -> startActivity(new Intent(LocationListActivity.this, HomeActivity.class)));
+        signOut.setOnClickListener(v -> startActivity(
+                new Intent(LocationListActivity.this, HomeActivity.class)));
 
         viewMap = findViewById(R.id.view_map);
         mapIntent = new Intent(LocationListActivity.this, MapActivity.class);
@@ -66,7 +71,9 @@ public class LocationListActivity extends AppCompatActivity {
     private void loadLocationData() {
         locations = new ArrayList<>();
 
-        db.collection("location-data").get().addOnCompleteListener(task -> {
+        CollectionReference collection = db.collection("location-data");
+        Task<QuerySnapshot> _task = collection.get();
+        _task.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 int i = 0;
                 for (QueryDocumentSnapshot doc : task.getResult()) {
@@ -80,7 +87,7 @@ public class LocationListActivity extends AppCompatActivity {
         });
     }
 
-    class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
+    final class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
 
         private final ArrayList<Location> locations;
 
@@ -92,7 +99,9 @@ public class LocationListActivity extends AppCompatActivity {
         @NonNull
         @Override
         public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.location_list_content, parent, false);
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View v = inflater.inflate(
+                    R.layout.location_list_content, parent, false);
             return new LocationViewHolder(v);
         }
 
@@ -115,29 +124,28 @@ public class LocationListActivity extends AppCompatActivity {
 
     }
 
-    class LocationViewHolder extends RecyclerView.ViewHolder {
+    final class LocationViewHolder extends RecyclerView.ViewHolder {
         final TextView name;
         private Location targetLocation;
 
         private LocationViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.location_name);
-            System.out.println(String.valueOf(name.getText()));
             String item_name = String.valueOf(name.getText());
-            ArrayList<Location> targetLocations = new ArrayList<>(locationModel.getLocations());
-            System.out.println(targetLocations.toString());
+            List<Location> targetLocations = new ArrayList<>(locationModel.getLocations());
             for (int i = 0; i < targetLocations.size(); i++) {
-                if (item_name.equals(targetLocations.get(i).getName())) {
+                Location _location = targetLocations.get(i);
+                if (item_name.equals(_location.getName())) {
                     targetLocation = targetLocations.get(i);
                 }
             }
             itemView.setOnClickListener(view1 -> {
-                System.out.println(String.valueOf(name.getText()));
                 String item_name1 = String.valueOf(name.getText());
-                ArrayList<Location> targetLocations1 = new ArrayList<>(locationModel.getLocations());
-                System.out.println(targetLocations1.toString());
+                List<Location> targetLocations1 = new ArrayList<>(
+                        locationModel.getLocations());
                 for (int i = 0; i < targetLocations1.size(); i++) {
-                    if (item_name1.equals(targetLocations1.get(i).getName())) {
+                    Location _location = targetLocations1.get(i);
+                    if (item_name1.equals(_location.getName())) {
                         targetLocation = targetLocations1.get(i);
                     }
                 }
@@ -146,13 +154,13 @@ public class LocationListActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, LocationDetailActivity.class);
                     intent.putExtra("location_name", targetLocation.getName());
                     intent.putExtra("location_type", targetLocation.getType());
-                    intent.putExtra("location_longitude", String.valueOf(targetLocation.getLongitude()));
-                    intent.putExtra("location_latitude", String.valueOf(targetLocation.getLatitude()));
+                    intent.putExtra("location_longitude",
+                            String.valueOf(targetLocation.getLongitude()));
+                    intent.putExtra("location_latitude",
+                            String.valueOf(targetLocation.getLatitude()));
                     intent.putExtra("location_address", targetLocation.getAddress());
                     intent.putExtra("location_phone", targetLocation.getPhone());
                     context.startActivity(intent);
-                } else {
-                    System.out.println("targetLocation is null");
                 }
             });
         }

@@ -24,7 +24,14 @@ public class User {
     public boolean equals(Object o) {
         if (getClass() != o.getClass()) { return false; }
         User u = (User) o;
-        return (u.getUsername().equals(username) && u.getPassword().equals(password));
+        String _username = u.getUsername();
+        String _password = u.getPassword();
+        return (_username.equals(username) && _password.equals(password));
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode() + password.hashCode();
     }
 
     /**
@@ -35,12 +42,24 @@ public class User {
         return username;
     }
 
+    /**
+     * Sets the username of the user
+     * @param username User's new username
+     */
     private void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets the password of the user
+     * @return user's password
+     */
     private String getPassword() { return password; }
 
+    /**
+     * Sets the password of the user
+     * @param password User's new password
+     */
     private void setPassword(String password) {
         this.password = password;
     }

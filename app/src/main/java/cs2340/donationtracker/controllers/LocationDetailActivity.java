@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import cs2340.donationtracker.R;
 import cs2340.donationtracker.model.DonationItem;
+import cs2340.donationtracker.model.ItemCategory;
 import cs2340.donationtracker.model.Location;
 import cs2340.donationtracker.model.LocationModel;
 
@@ -38,37 +39,42 @@ public class LocationDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String locationName = getIntent().getStringExtra("location_name");
+        Intent intent = getIntent();
+
+        String locationName = intent.getStringExtra("location_name");
         TextView name = findViewById(R.id.location_detail_name);
         name.setText(String.format("Name: %s", locationName));
-        location = LocationModel.getInstance().findLocationByName(locationName);
+        LocationModel locationModel = LocationModel.getInstance();
+        location = locationModel.findLocationByName(locationName);
         ArrayList<DonationItem> items = new ArrayList<>(location.getItems());
 
-        String locationType = getIntent().getStringExtra("location_type");
+        String locationType = intent.getStringExtra("location_type");
         TextView type = findViewById(R.id.location_detail_type);
         type.setText(String.format("Type: %s", locationType));
 
-        String locationLongitude = getIntent().getStringExtra("location_longitude");
+        String locationLongitude = intent.getStringExtra("location_longitude");
         TextView longitude = findViewById(R.id.location_detail_longitude);
         longitude.setText(String.format("Longitude: %s", locationLongitude));
 
-        String locationLatitude = getIntent().getStringExtra("location_latitude");
+        String locationLatitude = intent.getStringExtra("location_latitude");
         TextView latitude = findViewById(R.id.location_detail_latitude);
         latitude.setText(String.format("Latitude: %s", locationLatitude));
 
-        String locationAddress = getIntent().getStringExtra("location_address");
+        String locationAddress = intent.getStringExtra("location_address");
         TextView address = findViewById(R.id.location_detail_address);
         address.setText(String.format("Address: %s", locationAddress));
 
-        String locationPhone = getIntent().getStringExtra("location_phone");
+        String locationPhone = intent.getStringExtra("location_phone");
         TextView phone = findViewById(R.id.location_detail_phone);
         phone.setText(String.format("Phone: %s", locationPhone));
 
         Button addItem = findViewById(R.id.add_item);
-        addItem.setOnClickListener(v -> startActivity(new Intent(LocationDetailActivity.this, AddDonationActivity.class)));
+        addItem.setOnClickListener(v -> startActivity(
+                new Intent(LocationDetailActivity.this, AddDonationActivity.class)));
 
         Button signOut = findViewById(R.id.sign_out);
-        signOut.setOnClickListener(v -> startActivity(new Intent(LocationDetailActivity.this, HomeActivity.class)));
+        signOut.setOnClickListener(v -> startActivity(
+                new Intent(LocationDetailActivity.this, HomeActivity.class)));
 
         RecyclerView mRecyclerView = findViewById(R.id.item_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -78,7 +84,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
     }
 
-    class ItemAdapter extends RecyclerView.Adapter<LocationDetailActivity.ItemViewHolder> {
+    final class ItemAdapter extends RecyclerView.Adapter<LocationDetailActivity.ItemViewHolder> {
 
         private final ArrayList<DonationItem> items;
 
@@ -89,13 +95,16 @@ public class LocationDetailActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public LocationDetailActivity.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
+        public LocationDetailActivity.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                                        int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View v = inflater.inflate(R.layout.item_list_content, parent, false);
             return new LocationDetailActivity.ItemViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull LocationDetailActivity.ItemViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull LocationDetailActivity.ItemViewHolder holder,
+                                     int position) {
             DonationItem item = items.get(position);
 
             holder.name.setText(item.getName());
@@ -113,35 +122,33 @@ public class LocationDetailActivity extends AppCompatActivity {
 
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    final class ItemViewHolder extends RecyclerView.ViewHolder {
         final TextView name;
         private DonationItem targetItem;
 
         private ItemViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.item_name);
-            System.out.println(String.valueOf(name.getText()));
             String item_name = String.valueOf(name.getText());
             ArrayList<DonationItem> targetItems = new ArrayList<>();
             if (location != null) {
                 targetItems.addAll(location.getItems());
             }
-            System.out.println(targetItems.toString());
             for (int i = 0; i < targetItems.size(); i++) {
-                if (item_name.equals(targetItems.get(i).getName())) {
+                DonationItem item = targetItems.get(i);
+                if (item_name.equals(item.getName())) {
                     targetItem = targetItems.get(i);
                 }
             }
             itemView.setOnClickListener(view1 -> {
-                System.out.println(String.valueOf(name.getText()));
                 String item_name1 = String.valueOf(name.getText());
                 ArrayList<DonationItem> targetItems1 = new ArrayList<>();
                 if (location != null) {
                     targetItems1.addAll(location.getItems());
                 }
-                System.out.println(targetItems1.toString());
                 for (int i = 0; i < targetItems1.size(); i++) {
-                    if (item_name1.equals(targetItems1.get(i).getName())) {
+                    DonationItem item = targetItems1.get(i);
+                    if (item_name1.equals(item.getName())) {
                         targetItem = targetItems1.get(i);
                     }
                 }
@@ -151,12 +158,12 @@ public class LocationDetailActivity extends AppCompatActivity {
                     intent.putExtra("item_name", targetItem.getName());
                     intent.putExtra("item_description", targetItem.getDescription());
                     intent.putExtra("item_description_full", targetItem.getDescriptionFull());
-                    intent.putExtra("item_location", targetItem.getLocation().getName());
-                    intent.putExtra("item_category", targetItem.getCategory().toString());
+                    Location _location = targetItem.getLocation();
+                    intent.putExtra("item_location", _location.getName());
+                    ItemCategory _category = targetItem.getCategory();
+                    intent.putExtra("item_category", _category.toString());
                     intent.putExtra("item_value", targetItem.getValue());
                     context.startActivity(intent);
-                } else {
-                    System.out.println("targetItem is null");
                 }
             });
         }

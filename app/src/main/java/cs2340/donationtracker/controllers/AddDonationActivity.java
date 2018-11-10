@@ -3,6 +3,7 @@ package cs2340.donationtracker.controllers;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,19 +59,35 @@ public class AddDonationActivity extends AppCompatActivity {
 
     private void onAddItem() {
         String[] itemInfo = new String[6];
+
         EditText name = findViewById(R.id.name);
-        itemInfo[0] = name.getText().toString();
+        Editable _name = name.getText();
+        itemInfo[0] = _name.toString();
+
         EditText description = findViewById(R.id.description);
-        itemInfo[1] = description.getText().toString();
+        Editable _description = description.getText();
+        itemInfo[1] = _description.toString();
+
         EditText descriptionFull = findViewById(R.id.description_full);
-        itemInfo[2] = descriptionFull.getText().toString();
-        itemInfo[3] = locationSpinner.getSelectedItem().toString();
+        Editable _descriptionFull = descriptionFull.getText();
+        itemInfo[2] = _descriptionFull.toString();
+
+        Object _locationSelected = locationSpinner.getSelectedItem();
+        itemInfo[3] = _locationSelected.toString();
+
         EditText value = findViewById(R.id.value);
-        itemInfo[4] = value.getText().toString();
-        itemInfo[5] = categorySpinner.getSelectedItem().toString();
+        Editable _value = value.getText();
+        itemInfo[4] = _value.toString();
+
+        Object _categorySelected = categorySpinner.getSelectedItem();
+        itemInfo[5] = _categorySelected.toString();
+
         DonationItem item = new DonationItem(itemInfo);
-        Location loc = locationModel.findLocationByName(locationSpinner.getSelectedItem().toString());
+
+        Object _selected = locationSpinner.getSelectedItem();
+        Location loc = locationModel.findLocationByName(_selected.toString());
         loc.addItem(item);
+
         Intent intent = new Intent(this, LocationDetailActivity.class);
         intent.putExtra("location_name", loc.getName());
         intent.putExtra("location_type", loc.getType());

@@ -3,6 +3,7 @@ package cs2340.donationtracker.controllers;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(v -> attemptRegister());
 
         Button cancelSignIn = findViewById(R.id.cancel_button);
-        cancelSignIn.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, HomeActivity.class)));
+        cancelSignIn.setOnClickListener(v -> startActivity(
+                new Intent(RegisterActivity.this, HomeActivity.class)));
 
     }
 
@@ -42,8 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the register attempt.
-        String username = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        Editable _username = mUsernameView.getText();
+        Editable _password = mPasswordView.getText();
+        String username = _username.toString();
+        String password = _password.toString();
 
         boolean cancel = false;
         View focusView = null;

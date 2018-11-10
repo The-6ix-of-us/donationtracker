@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -26,14 +27,14 @@ import cs2340.donationtracker.model.User;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private UserLoginTask mAuthTask = null;
+    private UserLoginTask mAuthTask;
 
     // UI references.
     private EditText mUsernameView;
     private EditText mPasswordView;
     private final User sample = new User("user", "pass");
     private static final ArrayList<User> users = new ArrayList<>();
-    protected static final Credentials credentials = new Credentials();
+    static final Credentials credentials = new Credentials();
 
 
     @Override
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         credentials.addUser(sample);
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+            if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
                 attemptLogin();
                 return true;
             }
@@ -78,8 +79,10 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        Editable _username = mUsernameView.getText();
+        Editable _password = mPasswordView.getText();
+        String username = _username.toString();
+        String password = _password.toString();
 
         boolean cancel = false;
         View focusView = null;
