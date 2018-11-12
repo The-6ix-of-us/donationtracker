@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * Represents a collection of donation items
  */
-public class DonationItemModel {
+public final class DonationItemModel {
     private static final DonationItemModel _instance = new DonationItemModel();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 

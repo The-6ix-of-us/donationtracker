@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,7 +174,7 @@ public class Location implements Parcelable {
 
     private List<String> getItemIDs() { return itemIDs; }
 
-    private void setItems(List<String> ids) {
+    private void setItems(Collection<String> ids) {
         items = new ArrayList<>();
         if ((ids != null) && !ids.isEmpty()) {
             for (String id : ids) {
@@ -216,7 +217,7 @@ public class Location implements Parcelable {
         address = in.readString();
     }
 
-    Map<String, Object> toMap() {
+    private Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
         result.put("Name", name);
         result.put("City", city);

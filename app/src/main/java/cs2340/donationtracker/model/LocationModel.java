@@ -13,7 +13,7 @@ import java.util.List;
  *
  * A class representing a collection of locations
  */
-public class LocationModel {
+public final class LocationModel {
     private static final LocationModel _instance = new LocationModel();
 
 
@@ -44,14 +44,16 @@ public class LocationModel {
         });
     }
 
-    /**
-     * Adds a location to the location list and firebase database
-     * @param item    location to be added
-     */
-    public void add(Location item) {
-        locations.add(item);
-        db.collection("location-data").add(item.toMap());
-    }
+// --Commented out by Inspection START (11/09/2018 5:43 PM):
+//    /**
+//     * Adds a location to the location list and firebase database
+//     * @param item    location to be added
+//     */
+//    public void add(Location item) {
+//        locations.add(item);
+//        db.collection("location-data").add(item.toMap());
+//    }
+// --Commented out by Inspection STOP (11/09/2018 5:43 PM)
 
     /**
      * Gets the list of locations
@@ -61,21 +63,27 @@ public class LocationModel {
         return locations;
     }
 
-    /**
-     * Gets the current location
-     * @return current location
-     */
-    public Location getCurrentLocation() { return _currentLocation;}
+// --Commented out by Inspection START (11/09/2018 5:43 PM):
+//    /**
+//     * Gets the current location
+//     * @return current location
+//     */
+//    public Location getCurrentLocation() { return _currentLocation;}
+// --Commented out by Inspection STOP (11/09/2018 5:43 PM)
 
-    /**
-     * Sets the current location to chosen location parameter
-     * @param location    location to be set as current location
-     */
-    public void setCurrentLocation(Location location) { _currentLocation = location; }
+// --Commented out by Inspection START (11/09/2018 5:43 PM):
+//    /**
+//     * Sets the current location to chosen location parameter
+//     * @param location    location to be set as current location
+//     */
+//    public void setCurrentLocation(Location location) { _currentLocation = location; }
+// --Commented out by Inspection STOP (11/09/2018 5:43 PM)
 
     Location findLocationById(String id) {
         for (Location d : locations) {
-            if (d.getKey().equals(id)) return d;
+            if (d.getKey().equals(id)) {
+                return d;
+            }
         }
         Log.d("MYAPP", "Warning - Failed to find id: " + id);
         return null;
@@ -84,10 +92,14 @@ public class LocationModel {
     /**
      * Finds location using the name of the location
      * @param name    location's name
+     *
+     * @return the Location, if found. Or else, null
      */
     public Location findLocationByName(String name) {
         for (Location d : locations) {
-            if (d.getName().equals(name)) return d;
+            if (d.getName().equals(name)) {
+                return d;
+            }
         }
         Log.d("MYAPP", "Warning - Failed to find name: " + name);
         return null;

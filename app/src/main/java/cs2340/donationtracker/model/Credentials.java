@@ -23,7 +23,7 @@ public class Credentials {
      * Gets the list of users
      * @return the list of users associated with the credential
      */
-    public List<User> getUsers() {
+    public Iterable<User> getUsers() {
         return users;
     }
 
