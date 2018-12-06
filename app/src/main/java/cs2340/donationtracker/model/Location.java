@@ -77,7 +77,7 @@ public class Location implements Parcelable {
 
     }
 
-    protected String getKey() {
+    public String getKey() {
         return key;
     }
 

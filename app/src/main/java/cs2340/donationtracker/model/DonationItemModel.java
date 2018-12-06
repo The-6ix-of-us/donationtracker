@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DonationItemModel {
     private static final DonationItemModel _instance = new DonationItemModel();
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public static DonationItemModel getInstance() { return _instance; }
 
@@ -20,20 +20,20 @@ public class DonationItemModel {
     public DonationItemModel() {
         itemsMap = new HashMap<>();
         items = new ArrayList<>();
-        setItems();
+//        setItems();
     }
 
-    private void setItems() {
-        db.collection("donation-items").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    DonationItem item = new DonationItem(doc);
-                    itemsMap.put(doc.getId(), item);
-                    items.add(item);
-                }
-            }
-        });
-    }
+//    private void setItems() {
+//        db.collection("donation-items").get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot doc : task.getResult()) {
+//                    DonationItem item = new DonationItem(doc);
+//                    itemsMap.put(doc.getId(), item);
+//                    items.add(item);
+//                }
+//            }
+//        });
+//    }
 
     public DonationItem getItemByID(String id) { return itemsMap.get(id); }
 

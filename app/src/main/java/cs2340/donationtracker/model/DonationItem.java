@@ -18,7 +18,7 @@ public class DonationItem {
 
     private final LocationModel locationModel = LocationModel.getInstance();
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public DonationItem(String[] itemInfo) {
         name = itemInfo[0];
@@ -27,10 +27,11 @@ public class DonationItem {
         location = LocationModel.getInstance().findLocationByName(itemInfo[3]);
         value = Integer.parseInt(itemInfo[4]);
         category = ItemCategory.getCategory(itemInfo[5]);
+        key = itemInfo[6];
 
-        DocumentReference docRef = db.collection("donation-items").document();
-        key = docRef.getId();
-        docRef.set(toMap());
+//        DocumentReference docRef = db.collection("donation-items").document();
+//        key = docRef.getId();
+//        docRef.set(toMap());
     }
 
     public DonationItem(DocumentSnapshot item) {
